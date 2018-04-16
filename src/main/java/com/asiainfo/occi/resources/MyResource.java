@@ -1,12 +1,13 @@
-package org.asiainfo.ocdp.resources;
+package com.asiainfo.occi.resources;
 
 import io.swagger.annotations.*;
-import org.asiainfo.ocdp.bean.MyBean;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+import com.asiainfo.occi.bean.MyBean;
 
 /**
  * Root resource (exposed at "myresource" path)

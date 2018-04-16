@@ -3,7 +3,7 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.asiainfo.ocdp</groupId>
+  <groupId>com.asiainfo.occi</groupId>
   <artifactId>occi</artifactId>
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>

@@ -1,4 +1,4 @@
-package org.asiainfo.ocdp.bean;
+package com.asiainfo.occi.bean;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
