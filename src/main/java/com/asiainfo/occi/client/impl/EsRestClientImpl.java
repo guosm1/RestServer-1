@@ -1,29 +1,37 @@
 package com.asiainfo.occi.client.impl;
 
+import com.asiainfo.occi.bean.generated.Hdfs;
 import com.asiainfo.occi.client.EsRestClient;
-import org.glassfish.jersey.client.ClientConfig;
+import com.asiainfo.occi.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.client.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 public class EsRestClientImpl implements EsRestClient{
   private final static Logger logger = LoggerFactory.getLogger(EsRestClientImpl.class);
-  private final static WebTarget webTarget;
-  static{
-    Client client = ClientBuilder.newClient(new ClientConfig());
-    webTarget = client.target("http://localhost:8080/api/v1");
+  private static WebTarget webTarget;
+  private final static Configuration configuration = Configuration.getInstance();
+  private final static String logstash_disk = "/logstash-disk/";
+
+  public EsRestClientImpl(){
+    Client client = ClientBuilder.newClient();
+    String restServer = configuration.esRestServer();
+    webTarget = client.target(restServer);
   }
 
-  public String getData(){
-    WebTarget resourceWebTarget = webTarget.path("resource");
+  @Override
+  public Hdfs hdfsStorage() {
+    WebTarget resourceWebTarget = webTarget.path(logstash_disk + "disk/_search");
     Invocation.Builder request = resourceWebTarget.request();
-    Response response = request.get();
-    logger.info(response.readEntity(String.class));
-    return null;
+    Response post = request.post(Entity.entity("{\"query\":{\"match_all\":{}},\"sort\":[{\"@timestamp\":{\"order\":\"desc\"}}],\"size\":1,\"_source\":{\"include\":[\"total\",\"used\",\"@timestamp\"]}}",
+      MediaType.APPLICATION_JSON));
+    Hdfs result = post.readEntity(Hdfs.class);
+    logger.info("Total " + result.getHits().getHits().get(0).getSource().getTotal().toString());
+    logger.info("Total " + result.getHits().getHits().get(0).getSource().getUsed().toString());
+    return result;
   }
+
 }

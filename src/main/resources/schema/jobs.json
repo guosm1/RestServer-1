@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "required": [],
+  "properties": {
+    "count": {
+      "type": "number"
+    },
+    "_shards": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "total": {
+          "type": "number"
+        },
+        "successful": {
+          "type": "number"
+        },
+        "failed": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

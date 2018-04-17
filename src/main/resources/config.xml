@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <config id="main">
-  <es-rest>10.1.236.113</es-rest>
+  <es-rest>http://10.1.236.111:9200</es-rest>
 </config>

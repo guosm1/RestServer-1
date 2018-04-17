@@ -1,0 +1,84 @@
+{
+  "type": "object",
+  "required": [],
+  "properties": {
+    "took": {
+      "type": "number"
+    },
+    "timed_out": {
+      "type": "string"
+    },
+    "_shards": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "total": {
+          "type": "number"
+        },
+        "successful": {
+          "type": "number"
+        },
+        "failed": {
+          "type": "string"
+        }
+      }
+    },
+    "hits": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "total": {
+          "type": "number"
+        },
+        "max_score": {
+          "type": "string"
+        },
+        "hits": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [],
+            "properties": {
+              "_index": {
+                "type": "string"
+              },
+              "_type": {
+                "type": "string"
+              },
+              "_id": {
+                "type": "string"
+              },
+              "_score": {
+                "type": "string"
+              },
+              "_ttl": {
+                "type": "number"
+              },
+              "_source": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "total": {
+                    "type": "number"
+                  },
+                  "@timestamp": {
+                    "type": "string"
+                  },
+                  "used": {
+                    "type": "number"
+                  }
+                }
+              },
+              "sort": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
