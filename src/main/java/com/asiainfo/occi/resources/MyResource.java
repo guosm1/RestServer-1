@@ -8,6 +8,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.asiainfo.occi.bean.MyBean;
+import com.asiainfo.occi.client.EsRestClient;
+import com.asiainfo.occi.configuration.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Root resource (exposed at "myresource" path)
@@ -16,6 +19,8 @@ import com.asiainfo.occi.bean.MyBean;
 @Api(value = "/myresource", description = "My general resources test")
 public class MyResource {
 
+  @Autowired
+  private EsRestClient esRestClient;
   /**
    * Method handling HTTP GET requests. The returned object will be sent
    * to the client as "text/plain" media type.
@@ -25,7 +30,8 @@ public class MyResource {
   @GET
   @Produces(MediaType.TEXT_PLAIN)
   public String getIt() {
-    return "Got it!";
+    esRestClient.getData();
+    return Configuration.esRestServer();
   }
 
   @GET

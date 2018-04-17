@@ -6,7 +6,7 @@
   <groupId>com.asiainfo.occi</groupId>
   <artifactId>occi</artifactId>
   <packaging>war</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>3.0-SNAPSHOT</version>
   <name>occi</name>
 
   <build>
@@ -26,15 +26,6 @@
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <version>9.4.7.v20170914</version>
-        <!-- Default bind package phase to run-->
-        <!--<executions>-->
-          <!--<execution>-->
-            <!--<phase>package</phase>-->
-            <!--<goals>-->
-              <!--<goal>run</goal>-->
-            <!--</goals>-->
-          <!--</execution>-->
-        <!--</executions>-->
         <configuration>
           <war>${project.basedir}/target/occi</war>
         </configuration>
@@ -71,9 +62,50 @@
       <artifactId>jersey-media-json-jackson</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.glassfish.jersey.core</groupId>
+      <artifactId>jersey-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.ext</groupId>
+      <artifactId>jersey-spring4</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>4.3.14.RELEASE</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.servlet</groupId>
+          <artifactId>servlet-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>dom4j</groupId>
+      <artifactId>dom4j</artifactId>
+      <version>1.6.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
       <version>9.4.7.v20170914</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.swagger</groupId>
@@ -82,7 +114,8 @@
     </dependency>
   </dependencies>
   <properties>
-    <jersey.version>2.27</jersey.version>
+    <jersey.version>2.26</jersey.version>
+    <log4j.version>2.6.2</log4j.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 </project>

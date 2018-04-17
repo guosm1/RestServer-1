@@ -12,6 +12,10 @@
         io.swagger.jaxrs.listing,com.asiainfo.occi.resources
       </param-value>
     </init-param>
+    <init-param>
+      <param-name>javax.ws.rs.Application</param-name>
+      <param-value>com.asiainfo.occi.Application</param-value>
+    </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet>
@@ -35,4 +39,11 @@
     <servlet-name>Jersey Web Application</servlet-name>
     <url-pattern>/api/v1/*</url-pattern>
   </servlet-mapping>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:applicationContext.xml</param-value>
+  </context-param>
 </web-app>
