@@ -1,6 +1,7 @@
 package com.asiainfo.occi.client.impl;
 
 import com.asiainfo.occi.bean.generated.Hdfs;
+import com.asiainfo.occi.bean.generated.Jobs;
 import com.asiainfo.occi.client.EsRestClient;
 import com.asiainfo.occi.configuration.Configuration;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ public class EsRestClientImpl implements EsRestClient{
   private static WebTarget webTarget;
   private final static Configuration configuration = Configuration.getInstance();
   private final static String logstash_disk = "/logstash-disk/";
+  private final static String mylogstash_yarn_apps = "/mylogstash-yarn-apps/";
 
   public EsRestClientImpl(){
     Client client = ClientBuilder.newClient();
@@ -33,5 +35,15 @@ public class EsRestClientImpl implements EsRestClient{
     logger.info("Total " + result.getHits().getHits().get(0).getSource().getUsed().toString());
     return result;
   }
+  
+  public Jobs mapreducejobsStatistics() {
+	    WebTarget resourceWebTarget = webTarget.path(mylogstash_yarn_apps + "yarn.apps/_count?q=appType:SPARK");
+	    Invocation.Builder request = resourceWebTarget.request();
+	    Response get = request.get();
+	    Jobs result = get.readEntity(Jobs.class);
+	    logger.info("count " + result.getCount().toString());
+	    return result;
+	  } 
+  
 
 }

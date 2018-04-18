@@ -1,7 +1,9 @@
 package com.asiainfo.occi.resources;
 
 import com.asiainfo.occi.bean.HdfsResult;
+import com.asiainfo.occi.bean.MapreduceJobResult;
 import com.asiainfo.occi.bean.generated.Hdfs;
+import com.asiainfo.occi.bean.generated.Jobs;
 import com.asiainfo.occi.client.EsRestClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,5 +35,17 @@ public class DashboardChartsResource {
     HdfsResult result = new HdfsResult(hdfs.getHits().getHits().get(0).getSource().getTotal(),
       hdfs.getHits().getHits().get(0).getSource().getUsed());
     return Response.ok().entity(result).build();
+  }
+  
+  @GET
+  @ApiOperation("Get mapreduce jobs staticstics")
+  @ApiResponses(
+    @ApiResponse(code = 200, message = "Get successfully")
+  )
+  @Path("/mapreduce/staticstics")
+  public Response mapreducejobsStatistics(){
+    Jobs mr = esRestClient.mapreducejobsStatistics();
+    MapreduceJobResult result = new MapreduceJobResult(mr.getCount());
+   return Response.ok().entity(result).build();
   }
 }
