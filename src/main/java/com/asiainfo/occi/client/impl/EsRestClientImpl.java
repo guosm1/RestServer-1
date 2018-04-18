@@ -7,9 +7,12 @@ import com.asiainfo.occi.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.script.Invocable;
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.ws.Response;
+import javax.xml.ws.WebFault;
 
 public class EsRestClientImpl implements EsRestClient{
   private final static Logger logger = LoggerFactory.getLogger(EsRestClientImpl.class);
@@ -37,13 +40,22 @@ public class EsRestClientImpl implements EsRestClient{
   }
   
   public Jobs mapreducejobsStatistics() {
-	    WebTarget resourceWebTarget = webTarget.path(mylogstash_yarn_apps + "yarn.apps/_count?q=appType:SPARK");
-	    Invocation.Builder request = resourceWebTarget.request();
+	    WebTarget resourceWebTarget = webTarget.path(mylogstash_yarn_apps + "yarn.apps/_count");
+      Invocation.Builder request = resourceWebTarget.queryParam("q", "appType:MAPREDUCE").request();
 	    Response get = request.get();
 	    Jobs result = get.readEntity(Jobs.class);
 	    logger.info("count " + result.getCount().toString());
 	    return result;
-	  } 
+	  }
+
+  public Jobs sparkjobsStatistics(){
+    WebTarget resourceWebTarget = webTarget.path(mylogstash_yarn_apps + "yarn.apps/_count");
+    Invocable.Builder request = resourceWebTarget.queryParam("q", "appType:SPARK").request();
+    Response get = request.get();
+    Jobs result = get.readEntity(Jobs.class);
+    logger.info("count " + result.getCount().toString());
+    return result;
+  }
   
 
 }
