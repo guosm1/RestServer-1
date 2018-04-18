@@ -2,6 +2,7 @@ package com.asiainfo.occi.resources;
 
 import com.asiainfo.occi.bean.HdfsResult;
 import com.asiainfo.occi.bean.MapreduceJobResult;
+import com.asiainfo.occi.bean.SparkJobResult;
 import com.asiainfo.occi.bean.generated.Hdfs;
 import com.asiainfo.occi.bean.generated.Jobs;
 import com.asiainfo.occi.client.EsRestClient;
@@ -38,7 +39,7 @@ public class DashboardChartsResource {
   }
   
   @GET
-  @ApiOperation("Get mapreduce jobs staticstics")
+  @ApiOperation("Get mapreduce jobs statistics")
   @ApiResponses(
     @ApiResponse(code = 200, message = "Get successfully")
   )
@@ -47,5 +48,17 @@ public class DashboardChartsResource {
     Jobs mr = esRestClient.mapreducejobsStatistics();
     MapreduceJobResult result = new MapreduceJobResult(mr.getCount());
    return Response.ok().entity(result).build();
+  }
+
+  @GET
+  @ApiOperation("Get spark jobs statistics")
+  @ApiResponses(
+    @ApiResponse(code = 200, message = "Get successfully")
+  )
+  @Path("/spark/staticstics")
+  public Response sparkjobsStatistics(){
+    Jobs spark = esRestClient.sparkjobsStatistics();
+    SparkJobResult result = new SparkJobResult(spark.getCount());
+    return Response.ok().entity(result).build();
   }
 }

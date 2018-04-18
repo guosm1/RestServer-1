@@ -6,4 +6,5 @@ import com.asiainfo.occi.bean.generated.Jobs;
 public interface EsRestClient {
   Hdfs hdfsStorage();
   Jobs mapreducejobsStatistics();
+  Jobs sparkjobsStatistics();
 }
