@@ -15,36 +15,23 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "count",
-    "_shards"
+    "value"
 })
-public class Jobs {
+public class AvgVCores {
 
-    @JsonProperty("count")
-    private Double count;
-    @JsonProperty("_shards")
-    private Shards__ shards;
+    @JsonProperty("value")
+    private Double value;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("count")
-    public Double getCount() {
-        return count;
+    @JsonProperty("value")
+    public Double getValue() {
+        return value;
     }
 
-    @JsonProperty("count")
-    public void setCount(Double count) {
-        this.count = count;
-    }
-
-    @JsonProperty("_shards")
-    public Shards__ getShards() {
-        return shards;
-    }
-
-    @JsonProperty("_shards")
-    public void setShards(Shards__ shards) {
-        this.shards = shards;
+    @JsonProperty("value")
+    public void setValue(Double value) {
+        this.value = value;
     }
 
     @JsonAnyGetter
@@ -59,12 +46,12 @@ public class Jobs {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("count", count).append("shards", shards).append("additionalProperties", additionalProperties).toString();
+        return new ToStringBuilder(this).append("value", value).append("additionalProperties", additionalProperties).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(count).append(shards).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().append(value).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -72,11 +59,11 @@ public class Jobs {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Jobs) == false) {
+        if ((other instanceof AvgVCores) == false) {
             return false;
         }
-        Jobs rhs = ((Jobs) other);
-        return new EqualsBuilder().append(count, rhs.count).append(shards, rhs.shards).append(additionalProperties, rhs.additionalProperties).isEquals();
+        AvgVCores rhs = ((AvgVCores) other);
+        return new EqualsBuilder().append(value, rhs.value).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }

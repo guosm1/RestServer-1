@@ -1,0 +1,117 @@
+{
+  "type": "object",
+  "required": [],
+  "properties": {
+    "took": {
+      "type": "number"
+    },
+    "timed_out": {
+      "type": "string"
+    },
+    "_shards": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "total": {
+          "type": "number"
+        },
+        "successful": {
+          "type": "number"
+        },
+        "failed": {
+          "type": "string"
+        }
+      }
+    },
+    "hits": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "total": {
+          "type": "number"
+        },
+        "max_score": {
+          "type": "string"
+        },
+        "hits": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "aggregations": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "range_logdate": {
+          "type": "object",
+          "required": [],
+          "properties": {
+            "buckets": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "from": {
+                    "type": "number"
+                  },
+                  "from_as_string": {
+                    "type": "string"
+                  },
+                  "to": {
+                    "type": "number"
+                  },
+                  "to_as_string": {
+                    "type": "string"
+                  },
+                  "doc_count": {
+                    "type": "number"
+                  },
+                  "histogram_logdate": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                      "buckets": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [],
+                          "properties": {
+                            "key_as_string": {
+                              "type": "string"
+                            },
+                            "key": {
+                              "type": "number"
+                            },
+                            "doc_count": {
+                              "type": "number"
+                            },
+                            "avg_vCores": {
+                              "type": "object",
+                              "required": [],
+                              "properties": {
+                                "value": {
+                                  "type": "number"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

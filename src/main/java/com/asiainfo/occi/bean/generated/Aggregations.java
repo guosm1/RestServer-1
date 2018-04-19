@@ -15,36 +15,23 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "count",
-    "_shards"
+    "range_finishedTime"
 })
-public class Jobs {
+public class Aggregations {
 
-    @JsonProperty("count")
-    private Double count;
-    @JsonProperty("_shards")
-    private Shards__ shards;
+    @JsonProperty("range_finishedTime")
+    private RangeFinishedTime rangeFinishedTime;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("count")
-    public Double getCount() {
-        return count;
+    @JsonProperty("range_finishedTime")
+    public RangeFinishedTime getRangeFinishedTime() {
+        return rangeFinishedTime;
     }
 
-    @JsonProperty("count")
-    public void setCount(Double count) {
-        this.count = count;
-    }
-
-    @JsonProperty("_shards")
-    public Shards__ getShards() {
-        return shards;
-    }
-
-    @JsonProperty("_shards")
-    public void setShards(Shards__ shards) {
-        this.shards = shards;
+    @JsonProperty("range_finishedTime")
+    public void setRangeFinishedTime(RangeFinishedTime rangeFinishedTime) {
+        this.rangeFinishedTime = rangeFinishedTime;
     }
 
     @JsonAnyGetter
@@ -59,12 +46,12 @@ public class Jobs {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("count", count).append("shards", shards).append("additionalProperties", additionalProperties).toString();
+        return new ToStringBuilder(this).append("rangeFinishedTime", rangeFinishedTime).append("additionalProperties", additionalProperties).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(count).append(shards).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().append(rangeFinishedTime).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -72,11 +59,11 @@ public class Jobs {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Jobs) == false) {
+        if ((other instanceof Aggregations) == false) {
             return false;
         }
-        Jobs rhs = ((Jobs) other);
-        return new EqualsBuilder().append(count, rhs.count).append(shards, rhs.shards).append(additionalProperties, rhs.additionalProperties).isEquals();
+        Aggregations rhs = ((Aggregations) other);
+        return new EqualsBuilder().append(rangeFinishedTime, rhs.rangeFinishedTime).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }

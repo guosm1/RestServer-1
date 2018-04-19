@@ -1,7 +1,9 @@
 
 package com.asiainfo.occi.bean.generated;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -15,36 +17,23 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "count",
-    "_shards"
+    "buckets"
 })
-public class Jobs {
+public class HistogramFinishedTime {
 
-    @JsonProperty("count")
-    private Double count;
-    @JsonProperty("_shards")
-    private Shards__ shards;
+    @JsonProperty("buckets")
+    private List<Bucket_> buckets = new ArrayList<Bucket_>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("count")
-    public Double getCount() {
-        return count;
+    @JsonProperty("buckets")
+    public List<Bucket_> getBuckets() {
+        return buckets;
     }
 
-    @JsonProperty("count")
-    public void setCount(Double count) {
-        this.count = count;
-    }
-
-    @JsonProperty("_shards")
-    public Shards__ getShards() {
-        return shards;
-    }
-
-    @JsonProperty("_shards")
-    public void setShards(Shards__ shards) {
-        this.shards = shards;
+    @JsonProperty("buckets")
+    public void setBuckets(List<Bucket_> buckets) {
+        this.buckets = buckets;
     }
 
     @JsonAnyGetter
@@ -59,12 +48,12 @@ public class Jobs {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("count", count).append("shards", shards).append("additionalProperties", additionalProperties).toString();
+        return new ToStringBuilder(this).append("buckets", buckets).append("additionalProperties", additionalProperties).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(count).append(shards).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().append(buckets).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -72,11 +61,11 @@ public class Jobs {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Jobs) == false) {
+        if ((other instanceof HistogramFinishedTime) == false) {
             return false;
         }
-        Jobs rhs = ((Jobs) other);
-        return new EqualsBuilder().append(count, rhs.count).append(shards, rhs.shards).append(additionalProperties, rhs.additionalProperties).isEquals();
+        HistogramFinishedTime rhs = ((HistogramFinishedTime) other);
+        return new EqualsBuilder().append(buckets, rhs.buckets).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }
