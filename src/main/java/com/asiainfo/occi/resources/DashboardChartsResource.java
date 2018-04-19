@@ -10,8 +10,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -22,7 +22,7 @@ import javax.ws.rs.core.Response;
 @Api(value = "/dashboard", description = "Dashboard chart metric resources")
 public class DashboardChartsResource {
 
-  @Autowired
+  @Inject
   private EsRestClient esRestClient;
 
   @GET
