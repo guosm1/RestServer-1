@@ -3,11 +3,20 @@
   <appenders>
     <Console name="Console" target="SYSTEM_OUT">
       <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+      <Filters>
+        <ThresholdFilter level="info" onMatch="DENY" onMismatch="NEUTRAL"/>
+      </Filters>
     </Console>
+    <RollingFile name="RollingFile" fileName="logs/app.log"
+                 filePattern="log/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+      <SizeBasedTriggeringPolicy size="50MB"/>
+    </RollingFile>
   </appenders>
   <loggers>
     <root level="info">
       <appender-ref ref="Console"/>
+      <appender-ref ref="RollingFile"/>
     </root>
   </loggers>
 </configuration>

@@ -8,7 +8,10 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Singleton
 public class Configuration {
@@ -45,6 +48,22 @@ public class Configuration {
       Element e = elements.get(0);
       logger.info(e.getStringValue().trim());
       return e.getStringValue().trim();
+    }
+    return null;
+  }
+
+  @SuppressWarnings("unchecked")
+  public Map<String, String> ambariRestServer(){
+    if(null != document){
+      List<Element> elements = (List<Element>)rootElement.elements("ambari-rest");
+      assert elements.size() == 1;
+      Element e = elements.get(0);
+      Map<String, String> map = new HashMap<>();
+      map.put("username", e.elementText("username"));
+      map.put("password", e.elementText("password"));
+      map.put("url", e.elementText("url"));
+      logger.info(map.toString());
+      return map;
     }
     return null;
   }

@@ -36,7 +36,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
-  <bean id="esRestClient" class="com.asiainfo.occi.client.impl.EsRestClientImpl"/>
+  <bean class="com.asiainfo.occi.client.impl.EsRestClientImpl"/>
+  <bean class="com.asiainfo.occi.client.impl.AmbariRestClientImpl"/>
   <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 
 </beans>

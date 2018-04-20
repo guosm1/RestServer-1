@@ -27,15 +27,20 @@ public class DashboardChartsResource {
 
   @GET
   @ApiOperation("Get cluster hdfs quota")
-  @ApiResponses(
-    @ApiResponse(code = 200, message = "Get successfully")
-  )
-  @Path("/hdfs")
+  @ApiResponses({
+    @ApiResponse(code = 200, message = "Get successfully"),
+    @ApiResponse(code = 404, message = "Cannot get hdfs quota")
+  })
+  @Path("/hdfs/quota")
   public Response hdfsStorage(){
     Hdfs hdfs = esRestClient.hdfsStorage();
-    HdfsResult result = new HdfsResult(hdfs.getHits().getHits().get(0).getSource().getTotal(),
-      hdfs.getHits().getHits().get(0).getSource().getUsed());
-    return Response.ok().entity(result).build();
+    if(null == hdfs) {
+      return Response.status(404).entity("{\"status\": 404, \"message\": \"Cannot get hdfs quota\"}").build();
+    }else{
+      HdfsResult result = new HdfsResult(hdfs.getHits().getHits().get(0).getSource().getTotal(),
+        hdfs.getHits().getHits().get(0).getSource().getUsed());
+      return Response.ok().entity(result).build();
+    }
   }
   
   @GET

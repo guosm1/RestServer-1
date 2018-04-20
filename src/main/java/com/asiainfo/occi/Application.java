@@ -1,5 +1,6 @@
 package com.asiainfo.occi;
 
+import com.asiainfo.occi.resources.AmbariHdfsResource;
 import com.asiainfo.occi.resources.DashboardChartsResource;
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -9,5 +10,6 @@ public class Application extends ResourceConfig{
    */
   public Application() {
     register(DashboardChartsResource.class);
+    register(AmbariHdfsResource.class);
   }
 }

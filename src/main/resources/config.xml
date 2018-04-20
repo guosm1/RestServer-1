@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <config id="main">
   <es-rest>http://10.1.236.111:9200</es-rest>
-  <ambari-rest>http://10.1.236.61:8080</ambari-rest>
+  <ambari-rest>
+    <username>admin</username>
+    <password>admin</password>
+    <url>http://10.1.236.61:8080</url>
+  </ambari-rest>
 </config>

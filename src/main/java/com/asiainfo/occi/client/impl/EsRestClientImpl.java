@@ -30,9 +30,11 @@ public class EsRestClientImpl implements EsRestClient{
     Invocation.Builder request = resourceWebTarget.request();
     Response post = request.post(Entity.entity("{\"query\":{\"match_all\":{}},\"sort\":[{\"@timestamp\":{\"order\":\"desc\"}}],\"size\":1,\"_source\":{\"include\":[\"total\",\"used\",\"@timestamp\"]}}",
       MediaType.APPLICATION_JSON));
-    Hdfs result = post.readEntity(Hdfs.class);
-    logger.info("Total " + result.getHits().getHits().get(0).getSource().getTotal().toString());
-    logger.info("Total " + result.getHits().getHits().get(0).getSource().getUsed().toString());
+    Hdfs result = null;
+    if(post.getStatus() == 200) {
+      result = post.readEntity(Hdfs.class);
+      logger.info("Total " + result.getHits().getHits().get(0).getSource().getTotal().toString());
+    }
     return result;
   }
   
