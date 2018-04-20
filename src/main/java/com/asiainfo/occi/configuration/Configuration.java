@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 @Singleton
 public class Configuration {
@@ -64,6 +65,24 @@ public class Configuration {
       map.put("url", e.elementText("url"));
       logger.info(map.toString());
       return map;
+    }
+    return null;
+  }
+  
+  @SuppressWarnings("unchecked")
+  public Properties hdfs(){
+    if(null != document){
+      List<Element> elements = (List<Element>)rootElement.elements("hdfs");
+      assert elements.size() == 1;
+      Element e = elements.get(0);
+      Properties prop = new Properties();
+      Map<String, String> map = new HashMap<>();
+      map.put("username", e.elementText("username"));
+      map.put("password", e.elementText("password"));
+      map.put("url", e.elementText("url"));
+      logger.info(map.toString());
+      prop.putAll(map);
+      return prop;
     }
     return null;
   }
