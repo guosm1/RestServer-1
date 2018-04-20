@@ -1,15 +1,18 @@
 package com.asiainfo.occi.resources;
 
+import com.asiainfo.occi.bean.CpuResourceResult;
 import com.asiainfo.occi.bean.HdfsResult;
 import com.asiainfo.occi.bean.MapreduceJobResult;
 import com.asiainfo.occi.bean.SparkJobResult;
 import com.asiainfo.occi.bean.generated.Hdfs;
 import com.asiainfo.occi.bean.generated.Jobs;
+import com.asiainfo.occi.bean.generated.Resource;
 import com.asiainfo.occi.client.EsRestClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ResponseHeader;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -65,5 +68,17 @@ public class DashboardChartsResource {
     Jobs spark = esRestClient.sparkjobsStatistics();
     SparkJobResult result = new SparkJobResult(spark.getCount());
     return Response.ok().entity(result).build();
+  }
+  
+  @GET
+  @ApiOperation("Get cpu resource trend")
+  @ApiResponses(value = {
+		    @ApiResponse(code = 200, message = "Get successfully"),
+			@ApiResponse(code = 404, message = "Page not found") })
+  @Path("/resource/cputrend")
+  public Response cpuResourceTrend(){
+	  Resource cpu = esRestClient.cpuResourceTrend();
+	  CpuResourceResult result = new CpuResourceResult(cpu.getAggregations().getRangeLogdate().getBuckets().get(0).getHistogramLogdate().getBuckets().get(0).getAvgVCores().getValue(), cpu.getAggregations().getRangeLogdate().getBuckets().get(0).getHistogramLogdate().getBuckets().get(0).getKey());
+	  return Response.ok().entity(result).build(); 
   }
 }
