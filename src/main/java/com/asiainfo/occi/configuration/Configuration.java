@@ -1,18 +1,18 @@
 package com.asiainfo.occi.configuration;
 
+import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.inject.Singleton;
+
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Singleton;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 @Singleton
 public class Configuration {
@@ -75,15 +75,17 @@ public class Configuration {
       List<Element> elements = (List<Element>)rootElement.elements("hdfs");
       assert elements.size() == 1;
       Element e = elements.get(0);
+      List<Element> paras = e.elements();
       Properties prop = new Properties();
-      Map<String, String> map = new HashMap<>();
-      map.put("username", e.elementText("username"));
-      map.put("password", e.elementText("password"));
-      map.put("url", e.elementText("url"));
-      logger.info(map.toString());
-      prop.putAll(map);
+      paras.forEach(p -> {
+    	  prop.setProperty(p.getName(), p.getStringValue());
+      });
       return prop;
     }
     return null;
   }
+  
+  public static void main(String[] args) {
+	Configuration.getInstance().hdfs();
+}
 }

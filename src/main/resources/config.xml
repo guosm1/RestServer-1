@@ -6,4 +6,11 @@
     <password>admin</password>
     <url>http://10.1.236.61:8080</url>
   </ambari-rest>
+  <hdfs>
+    <fs.defaultFS>10.1.236.61:8020</fs.defaultFS>
+    <hadoop.security.authentication>simple</hadoop.security.authentication>
+    <krb5.file>/null/keytab</krb5.file>
+    <principal>null</principal>
+    <keytab>null</keytab>
+  </hdfs>
 </config>
