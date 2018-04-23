@@ -2,8 +2,8 @@ package com.asiainfo.occi.resources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -33,7 +33,7 @@ public class CmQuotaResource {
 	    @ApiResponse(code = 400, message = "Bad request"),
 	    @ApiResponse(code = 404, message = "Page not found")
 	})
-	public Response getHdfsQuota(@PathParam("path") String path) {
+	public Response getHdfsQuota(@QueryParam("path") String path) {
 		long storage = HDFSClient.getInstance().getTotalStorage(path);
 		long namespace = HDFSClient.getInstance().getTotalNamespace(path);
 		long usedStorage = HDFSClient.getInstance().getUsedStorge(path);
