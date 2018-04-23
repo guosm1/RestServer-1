@@ -12,10 +12,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ResponseHeader;
+
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -48,14 +50,19 @@ public class DashboardChartsResource {
   
   @GET
   @ApiOperation("Get mapreduce jobs statistics")
-  @ApiResponses(
-    @ApiResponse(code = 200, message = "Get successfully")
-  )
+  @ApiResponses({
+	    @ApiResponse(code = 200, message = "Get successfully"),
+	    @ApiResponse(code = 404, message = "Cannot get hdfs quota")
+	  })
   @Path("/mapreduce/staticstics")
   public Response mapreducejobsStatistics(){
     Jobs mr = esRestClient.mapreducejobsStatistics();
-    MapreduceJobResult result = new MapreduceJobResult(mr.getCount());
-   return Response.ok().entity(result).build();
+    if (null == mr) {
+    	return Response.status(404).entity("{\"status\": 404, \"message\": \"Cannot get mapreduce jobs statistics\"}").build();	
+	} else {
+		MapreduceJobResult result = new MapreduceJobResult(mr.getCount());
+		   return Response.ok().entity(result).build();
+	}
   }
 
   @GET
@@ -75,9 +82,12 @@ public class DashboardChartsResource {
   @ApiResponses(value = {
 		    @ApiResponse(code = 200, message = "Get successfully"),
 			@ApiResponse(code = 404, message = "Page not found") })
-  @Path("/resource/cputrend")
-  public Response cpuResourceTrend(){
-	  Resource cpu = esRestClient.cpuResourceTrend();
+  @Path("/resource/cpu_trend")
+  
+  public Response cpuResourceTrend(@Context HttpServletRequest request, @Context HttpServletRequest request2){
+	  String rangetim = request.getParameter("rangetim");
+	  String interval = request2.getParameter("interval");
+	  Resource cpu = esRestClient.cpuResourceTrend(rangetim, interval);
 	  CpuResourceResult result = new CpuResourceResult(cpu.getAggregations().getRangeLogdate().getBuckets().get(0).getHistogramLogdate().getBuckets().get(0).getAvgVCores().getValue(), cpu.getAggregations().getRangeLogdate().getBuckets().get(0).getHistogramLogdate().getBuckets().get(0).getKey());
 	  return Response.ok().entity(result).build(); 
   }
