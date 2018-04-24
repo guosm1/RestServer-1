@@ -4,6 +4,7 @@ import com.asiainfo.occi.bean.CpuResourceResult;
 import com.asiainfo.occi.bean.HdfsResult;
 import com.asiainfo.occi.bean.MapreduceJobResult;
 import com.asiainfo.occi.bean.SparkJobResult;
+import com.asiainfo.occi.bean.generated.Bucket___;
 import com.asiainfo.occi.bean.generated.Hdfs;
 import com.asiainfo.occi.bean.generated.Jobs;
 import com.asiainfo.occi.bean.generated.Resource;
@@ -13,11 +14,11 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -84,11 +85,20 @@ public class DashboardChartsResource {
 			@ApiResponse(code = 404, message = "Page not found") })
   @Path("/resource/cpu_trend")
   
-  public Response cpuResourceTrend(@Context HttpServletRequest request, @Context HttpServletRequest request2){
-	  String rangetim = request.getParameter("rangetim");
-	  String interval = request2.getParameter("interval");
-	  Resource cpu = esRestClient.cpuResourceTrend(rangetim, interval);
-	  CpuResourceResult result = new CpuResourceResult(cpu.getAggregations().getRangeLogdate().getBuckets().get(0).getHistogramLogdate().getBuckets().get(0).getAvgVCores().getValue(), cpu.getAggregations().getRangeLogdate().getBuckets().get(0).getHistogramLogdate().getBuckets().get(0).getKey());
-	  return Response.ok().entity(result).build(); 
+  public Response cpuResourceTrend(@QueryParam("rangetime") String rangetime, @QueryParam("intrval") String interval){
+      Resource cpu = esRestClient.cpuResourceTrend(rangetime, interval);
+      if (cpu == null) {
+    	  return Response.status(404).entity("{\"status\": 404, \"message\": \"Cannot Get cpu resource trend\"}").build();
+	} else {
+		List<CpuResourceResult.Pod> pod = new ArrayList<>();
+	      List<Bucket___> list = cpu.getAggregations().getRangeLogdate().getBuckets().get(0).getHistogramLogdate().getBuckets();
+	    	  list.forEach(e -> {
+	    		 Double vcore = e.getAvgVCores().getValue();
+	    		 Double key = e.getKey();
+	    		 pod.add(new CpuResourceResult.Pod(vcore, key));
+	      });
+	      CpuResourceResult result = new CpuResourceResult(pod);
+		  return Response.ok().entity(result).build();
+	}    
   }
 }

@@ -62,17 +62,20 @@ public class EsRestClientImpl implements EsRestClient{
   }
 
 @Override
-public Resource cpuResourceTrend(String a, String b ) {
+public Resource cpuResourceTrend(String rangetime, String interval ) {
 	// TODO Auto-generated method stub
 	WebTarget resourceWeTarget = webTarget.path(mylogstash_yarn_running + "_search");
 	Invocation.Builder request = resourceWeTarget.queryParam("search_type", "count").request();
-	String template = "{\"aggs\":{\"range_logdate\":{\"date_range\":{\"field\":\"logdate\",\"format\":\"epoch_millis\",\"ranges\":[{\"from\":\"now-${1d}\",\"to\":\"now\"}]},\"aggs\":{\"histogram_logdate\":{\"date_histogram\":{\"field\":\"logdate\",\"interval\":\"${5m}\",\"time_zone\":\"Asia/Shanghai\",\"format\":\"yyyy-MM-dd HH:mm:ss\",\"min_doc_count\":0},\"aggs\":{\"avg_vCores\":{\"avg\":{\"field\":\"vCores\"}}}}}}}}";
-	template.replace("${1d}", a );
-	template.replace("${5m}", b);
+	String template = "{\"aggs\":{\"range_logdate\":{\"date_range\":{\"field\":\"logdate\",\"format\":\"epoch_millis\",\"ranges\":[{\"from\":\"now-${1d\",\"to\":\"now\"}]},\"aggs\":{\"histogram_logdate\":{\"date_histogram\":{\"field\":\"logdate\",\"interval\":\"${5m\",\"time_zone\":\"Asia/Shanghai\",\"format\":\"yyyy-MM-dd HH:mm:ss\",\"min_doc_count\":0},\"aggs\":{\"avg_vCores\":{\"avg\":{\"field\":\"vCores\"}}}}}}}}";
+	template = template.replace("${1d", rangetime);
+	template = template.replace("${5m", interval);
 	Response post = request.post(Entity.entity(template, MediaType.APPLICATION_JSON));
-	Resource result = post.readEntity(Resource.class);
-	logger.info("value" + result.getAggregations().getRangeLogdate().getBuckets().get(0).getHistogramLogdate().getBuckets().get(0).getAvgVCores().getValue().toString());
-	logger.info("timestamp" + result.getAggregations().getRangeLogdate().getBuckets().get(0).getHistogramLogdate().getBuckets().get(0).getKey().toString());
+	Resource result = null;
+	if (post.getStatus() ==200) {
+		result = post.readEntity(Resource.class);
+		logger.info("value" + result.getAggregations().getRangeLogdate().getBuckets().get(0).getHistogramLogdate().getBuckets().get(0).getAvgVCores().getValue().toString());
+		logger.info("timestamp" + result.getAggregations().getRangeLogdate().getBuckets().get(0).getHistogramLogdate().getBuckets().get(0).getKey().toString());	
+	}
 	return result;
 }
   
