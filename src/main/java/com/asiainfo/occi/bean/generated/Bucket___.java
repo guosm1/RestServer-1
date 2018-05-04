@@ -18,7 +18,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
     "key_as_string",
     "key",
     "doc_count",
-    "avg_vCores"
+    "avg_vCores",
+    "avg_memory"
 })
 public class Bucket___ {
 
@@ -30,6 +31,8 @@ public class Bucket___ {
     private Double docCount;
     @JsonProperty("avg_vCores")
     private AvgVCores avgVCores;
+    @JsonProperty("avg_memory")
+    private AvgMemory avgMemory;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -72,6 +75,16 @@ public class Bucket___ {
     public void setAvgVCores(AvgVCores avgVCores) {
         this.avgVCores = avgVCores;
     }
+    
+    @JsonProperty("avg_memory")
+    public AvgMemory getAvgMemory() {
+        return avgMemory;
+    }
+
+    @JsonProperty("avg_memory")
+    public void setAvgMemory(AvgMemory avgMemory) {
+        this.avgMemory = avgMemory;
+    }
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
@@ -85,12 +98,12 @@ public class Bucket___ {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("keyAsString", keyAsString).append("key", key).append("docCount", docCount).append("avgVCores", avgVCores).append("additionalProperties", additionalProperties).toString();
+        return new ToStringBuilder(this).append("keyAsString", keyAsString).append("key", key).append("docCount", docCount).append("avgMemory", avgMemory).append("additionalProperties", additionalProperties).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(docCount).append(additionalProperties).append(keyAsString).append(key).append(avgVCores).toHashCode();
+        return new HashCodeBuilder().append(docCount).append(additionalProperties).append(keyAsString).append(key).append(avgMemory).toHashCode();
     }
 
     @Override
@@ -102,7 +115,7 @@ public class Bucket___ {
             return false;
         }
         Bucket___ rhs = ((Bucket___) other);
-        return new EqualsBuilder().append(docCount, rhs.docCount).append(additionalProperties, rhs.additionalProperties).append(keyAsString, rhs.keyAsString).append(key, rhs.key).append(avgVCores, rhs.avgVCores).isEquals();
+        return new EqualsBuilder().append(docCount, rhs.docCount).append(additionalProperties, rhs.additionalProperties).append(keyAsString, rhs.keyAsString).append(key, rhs.key).append(avgMemory, rhs.avgMemory).isEquals();
     }
 
 }

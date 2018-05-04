@@ -1,11 +1,11 @@
 package com.asiainfo.occi.resources;
 
-import com.asiainfo.occi.bean.CpuResourceResult;
-import com.asiainfo.occi.bean.HdfsResult;
-import com.asiainfo.occi.bean.MapreduceJobResult;
-import com.asiainfo.occi.bean.SparkJobResult;
+import com.asiainfo.occi.bean.*;
+import com.asiainfo.occi.bean.JobTrendResult.Pod;
+import com.asiainfo.occi.bean.generated.Bucket_;
 import com.asiainfo.occi.bean.generated.Bucket___;
 import com.asiainfo.occi.bean.generated.Hdfs;
+import com.asiainfo.occi.bean.generated.JobTrend;
 import com.asiainfo.occi.bean.generated.Jobs;
 import com.asiainfo.occi.bean.generated.Resource;
 import com.asiainfo.occi.client.EsRestClient;
@@ -85,7 +85,7 @@ public class DashboardChartsResource {
 			@ApiResponse(code = 404, message = "Page not found") })
   @Path("/resource/cpu_trend")
   
-  public Response cpuResourceTrend(@QueryParam("rangetime") String rangetime, @QueryParam("intrval") String interval){
+  public Response cpuResourceTrend(@QueryParam("rangetime") String rangetime, @QueryParam("interval") String interval){
       Resource cpu = esRestClient.cpuResourceTrend(rangetime, interval);
       if (cpu == null) {
     	  return Response.status(404).entity("{\"status\": 404, \"message\": \"Cannot Get cpu resource trend\"}").build();
@@ -101,4 +101,76 @@ public class DashboardChartsResource {
 		  return Response.ok().entity(result).build();
 	}    
   }
+  
+  @GET
+  @ApiOperation("Get memory resource trend")
+  @ApiResponses(value = {
+		    @ApiResponse(code = 200, message = "Get successfully"),
+			@ApiResponse(code = 404, message = "Page not found") })
+  @Path("/resource/memory_trend")
+  
+  public Response memoryRecourceTrend(@QueryParam("rangetime") String rangetime, @QueryParam("interval") String interval){
+      Resource mem = esRestClient.memoryRecourceTrend(rangetime, interval);
+      if (mem == null) {
+    	  return Response.status(404).entity("{\"status\": 404, \"message\": \"Cannot Get memory resource trend\"}").build();
+	} else {
+		  List<MemoryResourceResult.Pod> pod = new ArrayList<>();
+	      List<Bucket___> list = mem.getAggregations().getRangeLogdate().getBuckets().get(0).getHistogramLogdate().getBuckets();
+	    	  list.forEach(e -> {
+	    		 Double memory = e.getAvgMemory().getValue();
+	    		 Double time = e.getKey();
+	    		 pod.add(new MemoryResourceResult.Pod(memory, time));
+	      });
+	    	  MemoryResourceResult result = new MemoryResourceResult(pod);
+		  return Response.ok().entity(result).build();
+	}    
+  }
+  
+  @GET
+  @ApiOperation("Get mapreduce jobs trend")
+  @ApiResponses(value = {
+		    @ApiResponse(code = 200, message = "Get successfully"),
+			@ApiResponse(code = 404, message = "Page not found") })
+  @Path("/jobs_trend/mapreduce")
+  
+  public Response mapreduceTrend(@QueryParam("rangetime") String rangetime, @QueryParam("interval") String interval){
+      JobTrend mrtrend = esRestClient.mapreduceTrend(rangetime, interval);
+      if (mrtrend == null) {
+    	  return Response.status(404).entity("{\"status\": 404, \"message\": \"Cannot Get mapreduce jobs trend\"}").build();
+    } else {
+    	List<Pod> pods = new ArrayList<>();
+    	List<Bucket_> list = mrtrend.getAggregations().getRangeFinishedTime().getBuckets().get(0).getHistogramFinishedTime().getBuckets();
+    	list.forEach(e -> {
+    		Double mr_count =e.getDocCount();
+    		Double time = e.getKey();
+    		pods.add(new Pod(mr_count, time));
+    		});
+    	JobTrendResult result = new JobTrendResult(pods);
+    	return Response.ok().entity(result).build();
+    	}
+  }
+  
+  @GET
+  @ApiOperation("Get spark jobs trend")
+  @ApiResponses(value = {
+		    @ApiResponse(code = 200, message = "Get successfully"),
+			@ApiResponse(code = 404, message = "Page not found") })
+  @Path("/jobs_trend/spark")
+  
+  public Response sparkTrend(@QueryParam("rangetime") String rangetime, @QueryParam("interval") String interval){
+      JobTrend sparktrend = esRestClient.sparkTrend(rangetime, interval);
+      if (sparktrend == null) {
+    	  return Response.status(404).entity("{\"status\": 404, \"message\": \"Cannot Get spark jobs trend\"}").build();
+    } else {
+    	List<Pod> pods = new ArrayList<>();
+    	List<Bucket_> list = sparktrend.getAggregations().getRangeFinishedTime().getBuckets().get(0).getHistogramFinishedTime().getBuckets();
+    	list.forEach(e -> {
+    		Double spark_count =e.getDocCount();
+    		Double time = e.getKey();
+    		pods.add(new Pod(spark_count, time));
+    		});
+		JobTrendResult result = new JobTrendResult(pods);
+	    	return Response.ok().entity(result).build(); 
+    	}
+  }   	
 }
